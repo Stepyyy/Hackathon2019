@@ -1,26 +1,53 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
+import Button from 'react-bootstrap/Button'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
+import withRouter from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+class App extends React.Component {
+
+
+  state = {
+    shows: [{ name: 'yes', link: 'www.google.com' }],
+    routeChange: routeChange.bind(this),
+  }
+
+  componentDidMount() {
+
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <div>
+          <header className="App-header">
+            <DropdownButton id="dropdown-basic-button" title="Search for watch parties">
+              <Dropdown.Item href="#/action-2">this.state.shows[1]</Dropdown.Item>
+              <Dropdown.Item href="https://en.wikipedia.org/wiki/La_La_Land_(film)" target="_blank">this.state.shows[2]}</Dropdown.Item>
+            </DropdownButton>
+          </header>
+          <div className="App-create">
+            <ButtonToolbar>
+              <Button variant="info" onClick={() => {console.log('yes')}}>Create watch party</Button>
+            </ButtonToolbar>;
+        </div>
+        </div>
+      </div>
+
+
+
+
+
+    );
+  }
 }
+
+
+
+
 
 export default App;
