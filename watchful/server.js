@@ -3,7 +3,7 @@ const app = express()
 const port = 3001
 const sqlite3 = require('better-sqlite3');
 const request = require('request')
-const OMDbAPIKey = 'ENTERKEYHERE';
+const OMDbAPIKey = 'KEYHERE';
 
 
 app.get('/', (req, res) => res.send(res.send(getAllShows())))
@@ -42,22 +42,35 @@ function getAllParties(imdbID) {
 }
 
 function getShowData(title) {
-  const OMDdRequest = {
-    url: 'http://www.omdbapi.com/?apikey=' + OMDbAPIKey + '&t=' + title,
-    method: 'GET'
-  };
-  request(OMDdRequest, function(err, res, body){
-    let json = JSON.parse(body);
-    console.log(json);
-    const db = new sqlite3('./db/watchfulstore.db', { verbose: console.log });
-    const showInsert = db.prepare(`INSERT INTO Show (imdbID, title, year, genre, plot, poster, type)
-    VALUES(?, ?, ?, ?, ?, ?, ?)`);
-    const insert = showInsert.run(json.imdbID, json.Title, json.Year, json.Genre, json.Plot, json.Poster, json.Type)
-    console.log(insert.changes);
-    db.close();
-    return json;
-  });
-  
+  var currentshow = returnSingleShow(title);
+  if (typeof currentshow === 'undefined'){
+    const OMDdRequest = {
+      url: 'http://www.omdbapi.com/?apikey=' + OMDbAPIKey + '&t=' + title,
+      method: 'GET'
+    };
+    request(OMDdRequest, function(err, res, body){
+      let json = JSON.parse(body);
+      console.log(json);
+      const db = new sqlite3('./db/watchfulstore.db', { verbose: console.log });
+      const showInsert = db.prepare(`INSERT INTO Show (imdbID, title, year, genre, plot, poster, type)
+      VALUES(?, ?, ?, ?, ?, ?, ?)`);
+      const insert = showInsert.run(json.imdbID, json.Title, json.Year, json.Genre, json.Plot, json.Poster, json.Type)
+      console.log(insert.changes);
+      db.close();
+      
+    });
+    
+    
+  }
+  else {
+    return currentshow;
+  } 
 }
 
-
+function returnSingleShow(title){
+  const db = new sqlite3('./db/watchfulstore.db', { verbose: console.log });
+  const showLookup = db.prepare(`SELECT * FROM Show WHERE title = ?`);
+  const selectShow = showLookup.get(title);
+  db.close();
+  return selectShow;
+}
