@@ -6,13 +6,20 @@ const request = require('request')
 const OMDbAPIKey = 'ENTERKEYHERE';
 
 
-app.get('/', (req, res) => res.send('Life'))
-
+app.get('/', (req, res) => res.send(res.send(getAllShows())))
 app.get('/party/:partyID', (req, res) => res.send(getParty(req.params.partyID)))
 app.get('/parties/:imdbID', (req, res) => res.send(getAllParties(req.params.imdbID)))
 app.get('/show/:title', (req, res) => res.send(getShowData(req.params.title)))
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+function getAllShows() {
+  const db = new sqlite3('./db/watchfulstore.db', { verbose: console.log });
+  const showsql = db.prepare('select title, imdbID from Show')
+  const rows = showsql.get()
+  db.close()
+  return rows
+}
 
 function getParty(partyID) {
   const db = new sqlite3('./db/watchfulstore.db', { verbose: console.log });
@@ -35,7 +42,6 @@ function getAllParties(imdbID) {
 }
 
 function getShowData(title) {
-  var showResult;
   const OMDdRequest = {
     url: 'http://www.omdbapi.com/?apikey=' + OMDbAPIKey + '&t=' + title,
     method: 'GET'
