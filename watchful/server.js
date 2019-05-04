@@ -3,7 +3,7 @@ const app = express()
 const port = 3001
 const sqlite3 = require('better-sqlite3');
 const request = require('request')
-const OMDbAPIKey = '60f7b912';
+const OMDbAPIKey = 'ENTERKEYHERE';
 
 
 app.get('/', (req, res) => res.send('Life'))
