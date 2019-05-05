@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const sqlite3 = require('better-sqlite3');
 const request = require('request-promise');
-const OMDbAPIKey = 'RYAN-FORGOT-TO-REMOVE-THIS-LOL';
+const OMDbAPIKey = '60f7b912';
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -21,14 +21,12 @@ app.get('/show/title/:title', (req, res) => {
       'User-Agent': 'Request-Promise'
     },
     json: true
-
   };
   request(url).then(response => {
     res.send(response);
   }).catch(err => {
     console.log(err);
   });
-  
 });
 app.get('/show/id/:imdbID', (req, res) => {
   const url = {
@@ -38,14 +36,12 @@ app.get('/show/id/:imdbID', (req, res) => {
       'User-Agent': 'Request-Promise'
     },
     json: true
-
   };
   request(url).then(response => {
     res.send(response);
   }).catch(err => {
     console.log(err);
   });
-  
 });
 
 app.listen(process.env.PORT || 3001)

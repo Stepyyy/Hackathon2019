@@ -8,20 +8,48 @@ import logo from "./watchful.png";
 
 class App extends React.Component {
   state = {
-    shows: []
+    shows: [],
+    selected: {
+      showID: null,
+      isVisible: false,
+      details: {
+        title: null,
+        year: null,
+        poster: ''
+      },
+      parties: null
+    }
   };
   componentDidMount() {
     fetch("http://localhost:3001/")
       .then(response =>{
-        console.log(response)
         return response.json()
       })
       .then(
         response => {
           this.setState({shows : response})
-          console.log(this.state)
         })
     }
+  
+  componentDidUpdate(prevProps, prevState) {
+    var currentShow = this.state.selected.showID
+    if (currentShow !== prevState.selected.showID){
+      fetch(`http://localhost:3001/parties/${currentShow}`)
+        .then(res => res.json())
+        .then(res => this.setState(
+          {selected: {parties: {
+            title: res.Title,
+            year: res.Year,
+            poster: res.Poster
+          }}}
+        ))
+      fetch(`http://localhost:3001/show/id/${currentShow}`)
+        .then(res => res.json())
+        .then(res => this.setState(
+          { selected: {details: res}}
+        ))
+    }
+  }
 
   render() {
     return (
@@ -29,16 +57,22 @@ class App extends React.Component {
         <div>
           <Header />
           <header>
+          Powered by OMDb.
             <DropdownButton
               id="dropdown-basic-button"
               variant="info"
               title="Search for watch parties"
             >
-            {this.state.shows.map((title, imdbID) => <Dropdown.Item>{title}</Dropdown.Item>)}
             
+            {this.state.shows.map(show => (<Dropdown.Item key={show.imdbID} href={`https://imdb.com/title/${show.imdbID}`} target='_blank' onSelect={() => {
+              this.setState({selected: {showID: show.imdbID, isVisible: true, details: {title: null, year: null, poster: null}}})
+            }}>{show.title}</Dropdown.Item>))}
+
             </DropdownButton>
           </header>
-
+              {this.state.selected.isVisible &&
+              console.log(this.state)
+              }
           <div className="App-create">
             <ButtonToolbar>
               <Button
