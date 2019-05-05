@@ -8,9 +8,20 @@ import logo from "./watchful.png";
 
 class App extends React.Component {
   state = {
-    shows: [{ name: "yes", link: "www.google.com" }]
+    shows: []
   };
-  componentDidMount() {}
+  componentDidMount() {
+    fetch("http://localhost:3001/")
+      .then(response =>{
+        console.log(response)
+        return response.json()
+      })
+      .then(
+        response => {
+          this.setState({shows : response})
+          console.log(this.state)
+        })
+    }
 
   render() {
     return (
@@ -23,15 +34,8 @@ class App extends React.Component {
               variant="info"
               title="Search for watch parties"
             >
-              <Dropdown.Item href="#/action-2">
-                this.state.shows[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              </Dropdown.Item>
-              <Dropdown.Item
-                href="https://en.wikipedia.org/wiki/La_La_Land_(film)"
-                target="_blank"
-              >
-                this.state.shows[2]}
-              </Dropdown.Item>
+            {this.state.shows.map((title, imdbID) => <Dropdown.Item>{title}</Dropdown.Item>)}
+            
             </DropdownButton>
           </header>
 

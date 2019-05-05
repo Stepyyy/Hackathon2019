@@ -1,10 +1,14 @@
 const express = require('express')
 const app = express()
-const port = 3001
 const sqlite3 = require('better-sqlite3');
 const request = require('request-promise');
 const OMDbAPIKey = '60f7b912';
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.get('/', (req, res) => res.send(getAllShows()))
 app.get('/party/:partyID', (req, res) => res.send(getParty(req.params.partyID)))
@@ -44,7 +48,7 @@ app.get('/show/id/:imdbID', (req, res) => {
   
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(process.env.PORT || 3001)
 
 function getAllShows() {
   const db = new sqlite3('./db/watchfulstore.db', { verbose: console.log });
