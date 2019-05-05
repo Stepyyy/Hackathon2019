@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const sqlite3 = require('better-sqlite3');
 const request = require('request-promise');
-const OMDbAPIKey = '60f7b912';
+const OMDbAPIKey = 'RYAN-FORGOT-TO-REMOVE-THIS-LOL';
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
