@@ -4,7 +4,7 @@ require('dotenv').config();
 const app = express();
 const cors = require('cors');
 const request = require('request-promise');
-const db = require('./db/db');
+const db = require('./models/db');
 
 const OMDbAPIKey = process.env.OMDB_API_KEY;
 
