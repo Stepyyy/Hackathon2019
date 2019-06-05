@@ -17,6 +17,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(express.json())
 app.use(cors());
 
 app.get('/', (req, res) => db.Show.findAll().then((shows) => {
