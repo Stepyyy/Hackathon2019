@@ -1,5 +1,12 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Requires a few env variables to be stored in a .env file in the project root
+Namely
+DB_DIALECT - DBMS intending to be used, right now is sqlite
+DB_STORAGE - path to db file (in the case of SQLITE which is the DBMS for this project as of right now)
+OMDB_API_KEY - Api key for the OMDB service
+
+
 ## Available Scripts
 
 In the project directory, you can run:

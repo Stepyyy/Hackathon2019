@@ -4,7 +4,7 @@ require('dotenv').config();
 const app = express();
 const cors = require('cors');
 const request = require('request-promise');
-const db = require('./db/db');
+const db = require('./models/db');
 
 const OMDbAPIKey = process.env.OMDB_API_KEY;
 
@@ -17,27 +17,28 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(express.json())
 app.use(cors());
 
 app.get('/', (req, res) => db.Show.findAll().then((shows) => {
   res.send(shows);
 }).catch((err) => {
   // eslint-disable-next-line
-  console.err(`Error was found ${err}`);
+  console.error(`Error was found ${err}`);
 }));
 
 app.get('/party/:partyID', (req, res) => db.Party.findAll({ where: { id: req.params.partyID } }).then(((parties) => {
   res.send(parties);
 })).catch((err) => {
   // eslint-disable-next-line
-  console.err(`Error was found ${err}`);
+  console.error(`Error was found ${err}`);
 }));
 
 app.get('/parties/:imdbID', (req, res) => db.Party.findAll({ where: { imdbID: req.params.imdbID } }).then((parties) => {
   res.send(parties);
 }).catch((err) => {
   // eslint-disable-next-line
-  console.err(`Error was found ${err}`);
+  console.error(`Error was found ${err}`);
 }));
 
 app.get('/show/title/:title', (req, res) => {
